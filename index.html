@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="su">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#713b45">
+<title>MPI Pupujian | Basa Sunda Kelas VII</title>
+<style>
+:root{
+ --wine:#713b45;--wine2:#8b4d56;--terracotta:#a65d52;--cream:#f8f3eb;
+ --paper:#fffdf9;--sand:#eadfce;--gold:#d5b77a;--ink:#352d2a;
+ --muted:#82756d;--line:#e9dfd4;--soft:#f3e8e2;--green:#547365;
+ --shadow:0 12px 35px rgba(82,48,47,.09)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}
+.app{min-height:100vh}
+.topbar{background:var(--wine);color:white;padding:15px max(18px,calc((100% - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:15px;position:sticky;top:0;z-index:10;box-shadow:0 4px 18px #3c20221c}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:43px;height:43px;border-radius:13px;background:var(--gold);color:var(--wine);display:grid;place-items:center;font-family:Georgia,serif;font-size:25px;font-weight:800}
+.brand strong{display:block;letter-spacing:.08em;font-size:14px}
+.brand small{color:#f0d9c5;letter-spacing:.14em;font-size:10px}
+.topmeta{font-size:11px;color:#f1e2d9;letter-spacing:.06em}
+.wrap{max-width:1180px;margin:auto;padding:24px 20px 55px}
+.hero{background:linear-gradient(115deg,#713b45,#a65d52);border-radius:24px;padding:30px;color:white;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.eyebrow{font-size:11px;letter-spacing:.16em;color:#f0d9a8;font-weight:750}
+.hero h1{font-family:Georgia,serif;font-size:clamp(30px,5vw,48px);line-height:1.08;margin:10px 0}
+.hero p{color:#f5e9e3;max-width:650px;line-height:1.7;margin:0 0 20px}
+.primary{background:var(--gold);color:#503039;border:0;padding:12px 18px;border-radius:12px;font-weight:750;box-shadow:0 4px 12px #30171b22}
+.secondary{background:white;color:var(--wine);border:1px solid var(--line);padding:10px 14px;border-radius:11px;font-weight:650}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:18px 0 27px}
+.stat,.panel,.tile{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:0 5px 20px rgba(82,48,47,.035)}
+.stat b{font-size:24px;color:var(--wine)}.stat small{display:block;color:var(--muted);margin-top:3px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:26px 0 13px}
+.section-head h2{margin:0;font-size:21px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.tile{min-height:145px;text-align:left;transition:.18s;border-color:var(--line);color:var(--ink)}
+.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#d5b7a7}
+.tile .ico{width:40px;height:40px;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-size:20px;margin-bottom:12px}
+.tile strong{display:block}.tile small{display:block;color:var(--muted);margin-top:4px;line-height:1.45}
+.progress{height:8px;background:#eee6dc;border-radius:20px;overflow:hidden;margin-top:11px}
+.progress span{display:block;height:100%;background:var(--terracotta);width:0;transition:.3s}
+.content{display:none}.content.active{display:block}
+.back{border:0;background:transparent;color:var(--wine);font-weight:750;padding:5px 0;margin-bottom:12px}
+.lesson-head{background:linear-gradient(110deg,var(--wine),var(--terracotta));color:white;padding:24px;border-radius:18px;margin-bottom:16px}
+.lesson-head h2{font-family:Georgia,serif;font-size:27px;margin:5px 0}
+.lesson-head p{color:#f4e5de;margin:0;line-height:1.55}
+.panel{margin-bottom:14px;line-height:1.7}
+.panel h3{margin:0 0 8px;color:var(--wine);font-size:18px}
+.panel h4{margin:14px 0 5px;color:var(--terracotta)}
+.panel p{margin:8px 0}
+.callout{background:#f7eee8;border-left:4px solid var(--terracotta);padding:13px 15px;border-radius:10px;margin:12px 0}
+.note{background:#f7f1e4;border:1px solid #eadbbd;padding:12px 14px;border-radius:11px;margin:12px 0}
+.pill,.badge{display:inline-block;background:#f3e6df;color:var(--wine);border-radius:999px;padding:5px 10px;font-size:11px;font-weight:750}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.navrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.navrow button{border:1px solid var(--line);background:white;border-radius:999px;padding:8px 13px;color:var(--wine)}
+.navrow button.active{background:var(--wine);color:white}
+.quiz-option{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);padding:12px 13px;border-radius:11px;margin:8px 0;color:var(--ink)}
+.quiz-option:hover{border-color:#c99b91}.quiz-option.selected{border:2px solid var(--terracotta);background:#fbf0eb}
+.feedback{padding:12px;border-radius:11px;margin-top:12px;background:#f7eee8}
+.feedback.good{background:#eaf2ec;color:#315c43}.feedback.bad{background:#f9e9e6;color:#8c3e37}
+.story-quote{font-family:Georgia,serif;font-size:17px;line-height:1.8;color:#59443e;background:#fbf6ef;border:1px solid var(--line);padding:17px;border-radius:13px;white-space:pre-line}
+.audio-card{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fffaf4;margin:12px 0}
+.audio-card h4{margin:0 0 4px;color:var(--wine)}
+.audio-card audio{width:100%;margin-top:10px}
+.audio-card small{color:var(--muted)}
+.lyrics{background:#fbf6ef;border-radius:11px;padding:13px 15px;white-space:pre-line;line-height:1.9;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--wine);background:#f8f0e9}
+.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:35px}
+.small{font-size:12px;color:var(--muted)}
+.visitor-gate{position:fixed;inset:0;z-index:1000;background:rgba(43,25,28,.72);display:grid;place-items:center;padding:18px}
+.visitor-card{width:min(100%,430px);background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:25px;box-shadow:0 18px 55px rgba(0,0,0,.22)}
+.visitor-card h2{font-family:Georgia,serif;color:var(--wine);margin:0 0 7px;font-size:26px}
+.visitor-card p{color:var(--muted);line-height:1.55;margin:0 0 17px;font-size:14px}
+.visitor-card label{display:block;color:var(--wine);font-weight:700;font-size:13px;margin:12px 0 6px}
+.visitor-card input,.visitor-card select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit}
+.visitor-card button{width:100%;margin-top:18px}
+.visitor-error{color:#a13e36;font-size:12px;min-height:18px;margin-top:8px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){
+ .topbar{padding:12px 14px}.topmeta{display:none}.wrap{padding:16px 13px 38px}
+ .hero{padding:23px 19px;border-radius:19px}.stats{gap:8px}.stat{padding:12px}.stat b{font-size:20px}.stat small{font-size:10px}
+ .grid{gap:9px}.tile{padding:13px;min-height:132px}.section-head h2{font-size:18px}
+ .two{grid-template-columns:1fr}.lesson-head{padding:20px}.lesson-head h2{font-size:23px}
+ table{font-size:12px}th,td{padding:8px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="visitor-gate" id="visitorGate">
+ <form class="visitor-card" id="visitorForm">
+  <span class="pill">MPI PUPUJIAN · KELAS VII</span>
+  <h2>Wilujeng Sumping!</h2>
+  <p>Sateuacan ngamimitian diajar, eusian heula idéntitas pikeun nyatet kunjungan.</p>
+  <label for="visitorName">Ngaran lengkep</label>
+  <input id="visitorName" name="nama" type="text" autocomplete="name" maxlength="100" required placeholder="Tulis ngaran">
+  <label for="visitorOrigin">Asal</label>
+  <select id="visitorOrigin" name="asal" required>
+   <option value="">Pilih asal</option><option value="Siswa">Siswa</option><option value="Guru">Guru</option><option value="Umum">Umum</option>
+  </select>
+  <div class="visitor-error" id="visitorError" role="status"></div>
+  <button class="primary" id="visitorSubmit" type="submit">Mimitian Diajar →</button>
+ </form>
+</div>
+<header class="topbar">
+ <div class="brand"><div class="logo">P</div><div><strong>HAYU DIAJAR</strong><small>NGAGUAR TRADISI PUPUJIAN</small></div></div>
+ <div class="topmeta">MEDIA PEMBELAJARAN INTERAKTIF · KELAS VII</div>
+</header>
+<main class="wrap">
+<section id="home" class="content active">
+ <div class="hero">
+  <div class="eyebrow">WILUJENG SUMPING!</div>
+  <h1>Hayu Ngawanohkeun<br>Pupujian Sunda!</h1>
+  <p>Diajar mikanyaho pupujian, ngaguar eusi jeung wangunna, ngaregepkeun nadomna, sarta ngajaga tradisi lisan anu hirup di masarakat Sunda.</p>
+  <button class="primary" onclick="openPage('pangwanoh')">Mimitian Diajar →</button>
+ </div>
+ <div class="stats">
+  <div class="stat"><b id="doneCount">0/6</b><small>Bagéan diajar</small></div>
+  <div class="stat"><b id="bestScore">—</b><small>Skor pangluhurna</small></div>
+  <div class="stat"><b id="progressPct">0%</b><small>Kamajuan diajar</small></div>
+ </div>
+ <div class="section-head"><div><h2>Jelajah Pangajaran</h2><p>Pilih salah sahiji bagian pikeun ngamimitian.</p></div><span class="badge">Kelas VII</span></div>
+ <div class="grid">
+  <button class="tile" onclick="openPage('pangwanoh')"><div class="ico">📖</div><strong>01 · Pangwanoh</strong><small>Tujuan jeung pituduh diajar pupujian</small></button>
+  <button class="tile" onclick="openPage('sajarah')"><div class="ico">🏛️</div><strong>02 · Sajarah Pupujian</strong><small>Asal-usul, kamekaran, jeung tradisi</small></button>
+  <button class="tile" onclick="openPage('wawasan')"><div class="ico">📚</div><strong>03 · Wawasan Pupujian</strong><small>Wangenan, ciri, jeung fungsi</small></button>
+  <button class="tile" onclick="openPage('eusi')"><div class="ico">🕌</div><strong>04 · Rupa-rupa Eusi</strong><small>Muji, solawat, doa, pepeling, jeung ajaran</small></button>
+  <button class="tile" onclick="openPage('wangun')"><div class="ico">📝</div><strong>05 · Wangun jeung Basa</strong><small>Pada, padalisan, purwakanti, jeung wirahma</small></button>
+  <button class="tile" onclick="openPage('audio')"><div class="ico">🎧</div><strong>06 · Pemutar Audio</strong><small>Rumpaka jeung rékaman pupujian</small></button>
+  <button class="tile" onclick="openPage('evaluasi')"><div class="ico">🎯</div><strong>07 · Evaluasi</strong><small>Latihan, kaulinan, jeung hasil diajar</small></button>
+ </div>
+ <div class="section-head"><div><h2>Kamajuan Diajar</h2><p>Kamajuan kacatet dina browser anu dipaké.</p></div></div>
+ <div class="panel"><div style="display:flex;justify-content:space-between;gap:10px"><strong>Progres sakabéhna</strong><strong id="progressLabel">0%</strong></div><div class="progress"><span id="progressBar"></span></div><p class="small">Réngsékeun unggal bagian, laju jajal évaluasi pikeun ngukur pamahaman.</p></div>
+</section>
+
+<section id="pangwanoh" class="content">
+ <button class="back" onclick="openPage('home')">← Beranda</button>
+ <div class="lesson-head"><span class="eyebrow">BAGÉAN 01</span><h2>Pangwanoh</h2><p>Ngawanohkeun tujuan jeung pituduh diajar ngeunaan pupujian.</p></div>
+ <div class="panel"><h3>Wilujeng diajar!</h3>
+  <p>Di masjid, musola, atawa pasantrén, urang mindeng ngadéngé sora jalma nganadomkeun rumpaka anu eusina muji ka Gusti Alloh, solawat ka nabi, ngadoa, atawa mapatahan sangkan ngalakukeun kahadéan. Rumpaka anu dinadomkeun éta salah sahijina disebut <b>pupujian</b>.</p>
+  <p>Pupujian lain saukur lalaguan. Eusina ngandung piwuruk, pangajaran, jeung ajén kahirupan. Ku diajar pupujian, urang bisa mikanyaho sastra Sunda sakaligus tradisi lisan di lingkungan masarakat.</p>
+  <div class="callout"><b>Pertanyaan panganteur:</b><br>Naha kungsi ngadéngé pupujian saméméh solat berjamaah? Pupujian naon anu masih sok kadéngé di masjid atawa musola deukeut imah?</div>
+ </div>
+ <div class="two">
+  <div class="panel"><h3>Tujuan pangajaran</h3><ol><li>Ngajelaskeun wangenan jeung ciri pupujian.</li><li>Ngajéntrékeun fungsi pupujian dina kahirupan masarakat.</li><li>Ngabédakeun rupa-rupa pupujian dumasar kana eusina.</li><li>Nganalisis wangun, purwakanti, jeung amanat pupujian.</li><li>Ngaregepkeun sarta ngedalkeun deui pupujian kalawan merenah.</li></ol></div>
+  <div class="panel"><h3>Pituduh ngagunakeun MPI</h3><ol><li>Pilih menu anu rék diteuleuman.</li><li>Baca pedaran kalawan taliti.</li><li>Tengetan rumpaka jeung hartina.</li><li>Putarkeun audio lamun geus disadiakeun.</li><li>Réngsékeun latihan jeung kaulinan.</li></ol></div>
+ </div>
+ <div class="panel"><h3>Hayu ngamimitian!</h3><p>Inget-inget deui hiji pupujian anu kungsi kadéngé! Coba caritakeun iraha jeung di mana éta pupujian dinadomkeun.</p><button class="primary" onclick="complete('pangwanoh');openPage('sajarah')">Bagéan ieu geus kaharti →</button></div>
+</section>
+
+
+<section id="sajarah" class="content">
+ <button class="back" onclick="openPage('home')">← Beranda</button>
+ <div class="lesson-head"><span class="eyebrow">BAGÉAN 02</span><h2>Sajarah Pupujian</h2><p>Ngaguar gelarna tradisi pupujian dina kahirupan masarakat Sunda.</p></div>
+ <div class="panel">
+  <h3>Asal-usul pupujian di Tatar Sunda</h3>
+  <p>Pupujian raket patalina jeung asupna agama Islam di Tatar Sunda. Nalika ajaran Islam sumebar, masjid, musola, pasantrén, madrasah, jeung tempat pangajian jadi puseur kagiatan diajar agama. Dina éta lingkungan, ajaran jeung piwuruk agama ditepikeun ku rupa-rupa cara, salah sahijina ngaliwatan rumpaka anu dinadomkeun.</p>
+  <p>Panalungtikan ngeunaan <i>Puisi Pupujian dalam Bahasa Sunda</i> ngajelaskeun yén lahirna puisi pupujian dipatalikeun jeung mekarna agama Islam sarta pondok-pondok pasantrén di Jawa Barat. Ieu mangrupa katerangan sajarah dumasar kana panalungtikan, lain tanggal pasti iraha pupujian mimiti aya.</p>
+  <div class="note"><b>Catetan sajarah:</b> Teu aya hiji tanggal tunggal anu bisa dipastikeun minangka taun mimiti lahirna pupujian Sunda. Ku kituna, leuwih taliti lamun disebutkeun yén tradisi pupujian mekar babarengan jeung sumebarna pangajaran Islam, pasantrén, masjid, jeung pangajian di Tatar Sunda.</div>
+ </div>
+ <div class="panel">
+  <h3>Pupujian dina kahirupan pasantrén jeung masarakat</h3>
+  <p>Pupujian dipaké minangka média pikeun nepikeun puja-puji, doa, naséhat, katerangan hadis, riwayat Rasululloh, tafsir Al-Qur'an, jeung pangajaran fikih. Rumpakana dinadomkeun sangkan gampang kadéngé, diapalkeun, jeung kaharti ku masarakat.</p>
+  <p>Di masjid jeung musola, pupujian kaprahna dinadomkeun bari ngadagoan solat berjamaah, utamana dina waktu antara adan jeung komat. Di pasantrén jeung madrasah, pupujian ogé dipaké dina kagiatan diajar. Di tempat pangajian, pupujian bisa dinadomkeun saméméh atawa sanggeus ngaji.</p>
+  <div class="callout"><b>Conto kaayaan:</b> nalika jamaah geus ngadéngé adan, sabagian masarakat ngariung di masjid bari ngadéngékeun atawa milu nembang pupujian saméméh solat dimimitian.</div>
+ </div>
+ <div class="panel">
+  <h3>Rumpaka, basa, jeung cara nyebarna</h3>
+  <p>Pupujian sumebar ngaliwatan tradisi lisan: dinadomkeun ku guru ngaji, ajengan, santri, jeung anggota masarakat, laju diajarkeun deui ka nu séjén. Eusina bisa maké basa Sunda, basa Arab, atawa campuran basa Sunda jeung Arab.</p>
+  <p>Salian ti ditepikeun sacara lisan, aya ogé naskah pupujian anu ditulis maké aksara Arab-Pégon. Katalog naskah Sunda nyatet salah sahiji naskah pupujian basa Sunda maké aksara Pégon anu diperkirakeun ditulis atawa disalin dina abad ka-19. Ieu bukti yén aya tradisi pupujian anu kungsi dirékam dina wangun tulisan, sanajan henteu otomatis ngabuktikeun yén tradisina kakara dimimitian dina abad éta.</p>
+ </div>
+ <div class="panel">
+  <h3>Kamekaran ti mangsa ka mangsa</h3>
+  <table>
+   <tr><th>Mangsa / kaayaan</th><th>Pedaran</th></tr>
+   <tr><td>Ngadegna lingkungan pangajaran Islam</td><td>Pupujian mekar dina lingkungan masjid, pasantrén, madrasah, jeung pangajian minangka cara nepikeun ajaran agama.</td></tr>
+   <tr><td>Tradisi saméméh jeung dina mangsa baheula</td><td>Pupujian remen kadéngé dina waktu-waktu ibadah, nalika ngadagoan solat, atawa dina kagiatan diajar di pasantrén jeung madrasah.</td></tr>
+   <tr><td>Mangsa kiwari</td><td>Di sababaraha tempat, pupujian masih dipaké dina kahirupan masjid jeung pangajian. Di tempat séjén, kasempetan kadéngéna leuwih kawates sarta bisa muncul dina acara Maulid, Rajaban, imtihan, atawa kagiatan kaagamaan séjén.</td></tr>
+  </table>
+  <p class="small">Panalungtikan taun 1986 nyatet yén dina mangsana, pamakéan pupujian di sababaraha tempat geus ngurangan sarta sabagian fungsina robah jadi kagiatan seni dina acara kaagamaan. Kaayaan unggal lembur bisa béda-béda.</p>
+ </div>
+ <div class="panel">
+  <h3>Pupujian minangka warisan budaya lisan</h3>
+  <p>Pupujian ngagambarkeun patepungna ajaran Islam jeung éksprési basa sarta sastra Sunda. Rumpaka anu dinadomkeun ngagunakeun basa anu dipikaharti ku masarakat, ku kituna bisa jadi média pikeun ngingetkeun ajaran agama, ngalatih talaran, jeung ngaraketkeun kahirupan masarakat.</p>
+  <p>Ku sabab diwariskeun ku cara dinadomkeun jeung diapalkeun, pupujian bisa boga variasi dina kecap, lentong, jeung wirahma di unggal wewengkon. Ku kituna, penting pikeun ngadéngékeun langsung ka narasumber lokal sarta nyatet saha sumberna.</p>
+  <div class="note"><b>Patalékan panalungtikan:</b> Pupujian naon anu masih kadéngé di lembur urang? Saha anu ngajarkeun? Naha rumpakana sarua jeung di lembur séjén? Kumaha parobahan kabiasaan nadom pupujian ti baheula nepi ka ayeuna?</div>
+ </div>
+ <div class="panel">
+  <h3>Sumber bacaan sajarah</h3>
+  <ul>
+   <li><a href="https://repositori.kemendikdasmen.go.id/1829/1/Puisi%20Pupujian%20Dalam%20Bahasa%20Sunda%20%281986%29.pdf" target="_blank" rel="noopener">Puisi Pupujian dalam Bahasa Sunda (1986)</a> — panalungtikan ngeunaan sajarah, fungsi, jeung pamakéan pupujian.</li>
+   <li><a href="https://journal.uinsgd.ac.id/index.php/jat/article/view/3039" target="_blank" rel="noopener">Pupujian (Shalawatan) sebelum Shalat Berjama’ah (2018)</a> — pedaran ngeunaan tradisi pupujian jeung sumber téksna.</li>
+   <li><a href="https://katalog.kairaga.com/detail?id=1163" target="_blank" rel="noopener">Katalog Naskah Pupujian</a> — katerangan salah sahiji naskah basa Sunda aksara Pégon anu diperkirakeun ti abad ka-19.</li>
+  </ul>
+  <button class="primary" onclick="complete('sajarah');openPage('wawasan')">Bagéan ieu geus kaharti →</button>
+ </div>
+</section>
+
+<section id="wawasan" class="content">
+ <button class="back" onclick="openPage('home')">← Beranda</button>
+ <div class="lesson-head"><span class="eyebrow">BAGÉAN 02</span><h2>Wawasan Pupujian</h2><p>Mikanyaho wangenan, ciri, fungsi, jeung tempat hirupna pupujian.</p></div>
+ <div class="panel"><h3>Naon ari pupujian?</h3>
+  <p><b>Pupujian</b> nyaéta karya sastra wangun puisi buhun atawa basa ugeran anu eusina ngandung puja-puji ka Alloh Swt., solawat ka Nabi Muhammad saw., doa, pépéling, jeung pangajaran agama. Pupujian biasana dinadomkeun ku wirahma anu basajan, utamana di masjid, musola, jeung pasantrén.</p>
+  <p>Dina tradisi masarakat Sunda, pupujian mindeng dinadomkeun bari nungguan waktu solat berjamaah, contona dina waktu antara adan jeung komat. Aya ogé pupujian anu dinadomkeun dina kagiatan pangajian atawa acara kaagamaan.</p>
+ </div>
+ <div class="panel"><h3>Ciri-ciri pupujian</h3><div class="two">
+  <div><span class="pill">Eusi réligius</span><p>Ngandung puji, doa, solawat, naséhat, atawa pangajaran agama.</p><span class="pill">Basa ugeran</span><p>Disusun dina wangun padalisan jeung pada, lain prosa biasa.</p></div>
+  <div><span class="pill">Aya purwakanti</span><p>Mindeng miboga padeukeutna sora atawa rima dina tungtung padalisan.</p><span class="pill">Dinadomkeun</span><p>Biasana dilagukeun ku wirahma anu basajan tur gampang diapalkeun.</p></div>
+ </div></div>
+ <div class="panel"><h3>Fungsi pupujian</h3>
+  <ul><li><b>Fungsi éksprési:</b> minangka cara ngedalkeun rasa muji, nyaah, sukur, jeung pasrah ka Gusti.</li><li><b>Fungsi sosial:</b> nepikeun piwuruk, pangajaran, jeung ajén agama ka balaréa.</li><li><b>Fungsi atikan:</b> mantuan masarakat, kaasup barudak, ngapalkeun ajaran jeung naséhat ngaliwatan rumpaka.</li><li><b>Fungsi budaya:</b> ngajaga tradisi lisan jeung kabiasaan nembang pupujian di lingkungan masarakat.</li></ul>
+ </div>
+ <div class="panel"><h3>Di mana pupujian hirup?</h3><p>Pupujian bisa kapanggih dina kahirupan masarakat Sunda, utamana di masjid, musola, pasantrén, jeung kagiatan pangajian. Tapi kabiasaan unggal lembur bisa béda. Aya pupujian anu masih mindeng dinadomkeun, aya ogé anu geus jarang kadéngé.</p>
+  <div class="note"><b>Panalungtikan lokal Pandéglang:</b> tanyakeun ka kolot, guru ngaji, atawa pangurus masjid ngeunaan pupujian anu biasa dinadomkeun di lembur. Catet judul atawa padalisan bubukana, iraha ditembangkeun, saha anu biasa nganadomkeun, sarta naha aya rékamanana. Ulah nganggap hiji conto pasti aya di sakabéh lembur saméméh dipariksa langsung.</div>
+  <button class="primary" onclick="complete('wawasan');openPage('eusi')">Bagéan ieu geus kaharti →</button>
+ </div>
+</section>
+
+<section id="eusi" class="content">
+ <button class="back" onclick="openPage('home')">← Beranda</button>
+ <div class="lesson-head"><span class="eyebrow">BAGÉAN 03</span><h2>Rupa-rupa Eusi Pupujian</h2><p>Pupujian bisa dipasing-pasing dumasar kana maksud jeung eusi anu ditepikeun.</p></div>
+ <div class="panel"><h3>1. Muji kaagungan Alloh</h3><p>Eusina ngagungkeun kakawasaan, sipat, jeung kaasih Alloh Swt.</p><div class="story-quote">Alloh Anu Maha Akbar
+nu rahmatna Maha jembar
+Nu Maha Welas ngaganjar
+ka jalma nu ta'at sabar</div><p class="small">Conto rumpaka pupujian anu kacatet dina pustaka pupujian Sunda.</p></div>
+ <div class="panel"><h3>2. Solawat ka Nabi Muhammad saw.</h3><p>Eusina ngedalkeun solawat, salam, jeung rasa nyaah ka Rasululloh.</p><div class="story-quote">Allahumma sholli 'ala Muhammad
+Wa 'ala ali sayyidina Muhammad</div><p class="small">Ieu conto rumpaka solawat pondok basa Arab anu mindeng dihijikeun jeung tradisi pupujian. Cara nganadomkeunana bisa béda-béda di unggal tempat.</p></div>
+ <div class="panel"><h3>3. Doa jeung tobat</h3><p>Eusina mangrupa panyambat, pangharepan, jeung paménta hampura ka Alloh.</p><div class="story-quote">Mugi Gusti ngahampura
+kana dosa jisim abdi
+sareng dosa ibu-rama
+dulur muslimat-muslimin</div><div class="note">Ieu conto pondok anu disusun pikeun ngajelaskeun jenis eusi, lain diklaim minangka rumpaka tradisional ti hiji lembur.</div></div>
+ <div class="panel"><h3>4. Pépéling jeung naséhat</h3><p>Eusina ngingetan manusa sangkan ngalaksanakeun ibadah, amal soléh, jeung ngajauhan kalakuan goréng.</p><div class="story-quote">Eling-éling dulur kabéh
+ibadah ulah campoléh
+beurang peuting ulah weléh
+bisina kaburu paéh</div><p class="small">Conto pupujian “Eling-eling” anu dipikanyaho dina tradisi pupujian Sunda.</p></div>
+ <div class="panel"><h3>5. Pangajaran agama</h3><p>Eusina ngajarkeun perkara agama, upamana rukun iman, rukun Islam, fikih, akhlak, sajarah Islam, jeung pangajaran séjénna.</p><div class="story-quote">Pardu wudu aya genep sadayana
+hiji niat, kadua ngumbah beungeutna
+tilu ngumbah leungeun dua jeung sikuna
+opat ngusap sabagian sirahna
+lima ngumbah suku dua jeung muncangna
+genep tartib sing puguh runtuyanana</div><p class="small">Conto pangajaran fikih anu ditepikeun ngaliwatan pupujian/nadoman.</p>
+ <div class="note"><b>Catetan:</b> Dina sababaraha pustaka, eusi pupujian dipasing-pasing jadi lima atawa genep golongan. Bédana gumantung kana cara panalungtik ngagolongkeun doa, tobat, jeung paménta safaat.</div>
+ <button class="primary" onclick="complete('eusi');openPage('wangun')">Bagéan ieu geus kaharti →</button></div>
+</section>
+
+<section id="wangun" class="content">
+ <button class="back" onclick="openPage('home')">← Beranda</button>
+ <div class="lesson-head"><span class="eyebrow">BAGÉAN 04</span><h2>Wangun jeung Kaédah Basa</h2><p>Nengetan susunan rumpaka, purwakanti, jeung wirahma dina pupujian.</p></div>
+ <div class="panel"><h3>Padalisan jeung pada</h3><p><b>Padalisan</b> nyaéta jajaran atawa baris dina puisi. Sababaraha padalisan anu ngahiji jadi hiji bagian disebut <b>pada</b> atawa bait.</p><p>Pupujian Sunda mindeng diwangun ku opat padalisan dina sapada, sanajan aya ogé anu diwangun ku dua, genep, atawa leuwih padalisan.</p></div>
+ <div class="panel"><h3>Purwakanti</h3><p><b>Purwakanti</b> nyaéta padeukeutna atawa sasaruaan sora dina kecap atawa padalisan. Dina pupujian, purwakanti bisa kapanggih dina sora tungtung padalisan.</p><div class="story-quote">Allah Anu Maha Akbar
+nu rahmatna Maha jembar
+Nu Maha Welas ngaganjar
+ka jalma nu ta'at sabar</div><p>Tengetan sora tungtung kecap: <i>Akbar – jembar – ngaganjar – sabar</i>. Sora tungtungna padeukeut, ku kituna karasa murwakanti.</p></div>
+ <div class="panel"><h3>Wirahma jeung lentong</h3><p><b>Wirahma</b> nyaéta alunan atawa turun-naékna sora nalika pupujian dinadomkeun. Lentong jeung wirahma bisa béda-béda dumasar kana kabiasaan masarakat, guru ngaji, atawa pasantrén.</p><ul><li>Ulah ngebut teuing nalika nganadomkeun.</li><li>Jelaskeun sora unggal kecap.</li><li>Tengetan eureunna sora dina tungtung padalisan.</li><li>Jaga kasaluyuan jeung wirahma anu biasa dipaké di lingkunganana.</li></ul></div>
+ <div class="panel"><h3>Ngulik unsur pupujian</h3><table><tr><th>Unsur</th><th>Patarosan pikeun nganalisis</th></tr><tr><td>Téma/eusi</td><td>Naon poko anu dibahas dina rumpaka?</td></tr><tr><td>Padalisan jeung pada</td><td>Sabaraha baris dina unggal pada?</td></tr><tr><td>Purwakanti</td><td>Sora naon anu padeukeut dina tungtung padalisan?</td></tr><tr><td>Wirahma</td><td>Kumaha cara rumpaka dinadomkeun?</td></tr><tr><td>Amanat</td><td>Naon naséhat atawa ajén anu bisa dicokot?</td></tr></table>
+ <button class="primary" onclick="complete('wangun');openPage('audio')">Bagéan ieu geus kaharti →</button></div>
+</section>
+
+<section id="audio" class="content">
+ <button class="back" onclick="openPage('home')">← Beranda</button>
+ <div class="lesson-head"><span class="eyebrow">BAGÉAN 06</span><h2>Pemutar Audio Pupujian</h2><p>Tengetan rumpaka, déngékeun nadomna, laju talungtik eusi jeung amanatna.</p></div>
+ <div class="note"><b>Pituduh:</b> Rumpaka di handap ieu dicutat tina bahan anu disadiakeun ku guru. Pamuter audio geus disiapkeun pikeun unggal golongan. Pikeun ngahirupkeunana, simpen rékaman MP3 dina folder <code>audio</code> kalayan ngaran file anu geus ditangtukeun. Rumpaka diputer sakumaha naskah sumberna.</div>
+
+ <div class="audio-card">
+  <h4>1. Muji ka Alloh</h4>
+  <small>Eusi: muji kaagungan jeung rahmat Alloh, solawat, hampura, sarta pangéling ngeunaan ibadah.</small>
+  <audio controls preload="none"><source src="audio/muji-ka-alloh.mp3" type="audio/mpeg">Panyungsi ieu teu ngarojong audio.</audio>
+  <div class="lyrics">Ya Alloh nu sipat rohman
+ni'matna ngawalatraan
+sadayana kabagian
+ka nu kapir ka nu iman
+
+Rohmat Alloh salam Alloh
+ka Toha utusan Alloh
+rohmat Alloh salam Alloh
+ka Yasin kakasih Alloh
+
+Mugi Gusti ngahampura
+kana dosa jisim abdi
+sareng dosa ibu-rama
+dulur muslimin muslimat
+
+Éling-éling dulur kabéh
+ibadah ulah campoléh
+beurang peuting ulah weléh
+bisina kaburu paéh ini</div>
+ </div>
+
+ <div class="audio-card">
+  <h4>2. Salawat ka Kangjeng Nabi</h4>
+  <small>Eusi: solawat, kanyaah ka Rasululloh, jeung harepan meunang safaat.</small>
+  <audio controls preload="none"><source src="audio/solawat-ka-kangjeng-nabi.mp3" type="audio/mpeg">Panyungsi ieu teu ngarojong audio.</audio>
+  <div class="lyrics">Alloh parantos midawuh
+dina Quran tos diwuwuh
+hiji tikelna sapuluh
+piraku urang teu butuh
+
+Alloh bakal resep pisan
+ka nu nyieun kaalusan
+bakal maparin balesan
+ti puluh dugi ratusan
+
+Sayyid Muhammad amanat
+ka sadaya para umat
+mun anjeun hayang safaat
+kudu sukur kana ni'mat
+
+Anjeunna utusan Alloh
+dipikanyaah ku Alloh
+gaduh gelar habibulloh
+muhammadurrosululloh
+
+Ya Nabi salamun 'alaik
+Ya Rosul salamun 'alaik
+Ya Habib salamun 'alaik
+solawatullohi 'alaik
+
+Saacan anjeunna wafat
+nyaah ka umat wasiat
+kakupingna ku sohabat
+Ali nu nomer kaopat
+
+Kangjeng Rosul gaduh niat
+pikeun ka sadaya umat
+badé maparin safaat
+husus ka umat nu to'at
+
+Anjeunna badé ngabéla
+ka anu imanna bala
+neda ka Alloh Ta'ala
+rohmat Alloh nu tétéla
+
+Nu hayang meunang pitulung
+ti ayeuna ulah linglung
+diparéntah ulah embung
+nyembah ka Alloh Nu Agung</div>
+ </div>
+
+ <div class="audio-card">
+  <h4>3. Doa jeung Tobat</h4>
+  <small>Eusi: sarat-sarat tobat jeung ménta panghampura ka Alloh.</small>
+  <audio controls preload="none"><source src="audio/doa-jeung-tobat.mp3" type="audio/mpeg">Panyungsi ieu teu ngarojong audio.</audio>
+  <div class="lyrics">Sarat tobat anu sohéh aya lima
+hiji lésot tina dosa nu tiheula
+duana nejana moal rék balik deui
+tilu rasa helas getir dina ati
+
+opat lamun dosana téh hak adami
+ménta rido bandana pulangkeun deui
+lima istigfar ménta panghampurana
+ka Gusti Alloh istigfar nu utama</div>
+ </div>
+
+ <div class="audio-card">
+  <h4>4. Pépéling</h4>
+  <small>Eusi: ajakan salat berjamaah, inget kana tobat, jeung ganjaran ibadah.</small>
+  <audio controls preload="none"><source src="audio/pepeling.mp3" type="audio/mpeg">Panyungsi ieu teu ngarojong audio.</audio>
+  <div class="lyrics">Kakuping suara adan
+di masjid ti katebihan
+sihoréng téh ngawartosan
+ngajak solat babarengan
+
+Ulah sok solat di imah
+salami aya masjid mah
+pribumi atawa sémah
+hayu urang berjamaah
+
+Lamun jalma masih solat
+aya harepan selamat
+tapi lamun tara solat
+baladna si iblis laknat
+
+Kakuping suara adan
+ti masjid ti katebihan
+sihoréng téh ngawartosan
+ngajak solat babarengan
+
+Bakal poho kana tobat
+paéhna moal selamat
+hirupna moal mangpaaf
+usahana gé darurat
+
+Yu batur urang ngaléngkah
+nyumponan solat berjamaah
+ganjaran solat berjamaah
+tujuh likur ulah dimumurah</div>
+ </div>
+
+ <div class="audio-card">
+  <h4>5. Ajaran Agama</h4>
+  <small>Eusi: amal jariyah, élmu mangpaat, doa anak soléh, jeung piwuruk agama.</small>
+  <audio controls preload="none"><source src="audio/ajaran-agama.mp3" type="audio/mpeg">Panyungsi ieu teu ngarojong audio.</audio>
+  <div class="lyrics">Anu ngocor ka alam kubur
+tilu dina hadis Rosul
+hiji sodakoh jariyah
+bari ihlas karena Alloh
+
+Dua élmu nu mangpaat
+bari diala mangpaat
+tilu putra anu soléh
+ngaduakeun teu weléh-weléh
+
+Dosa urang lamun ditimbang
+ibarat budah lautan
+ibarat gunung nu luhur
+sarta mani ageung pisan
+
+Péci sanés ciri santri
+sanés ciri bisa ngaji
+tali péci ciri lalaki
+nu ngabakti ka Yang Widi
+
+Jilbab sanés ciri santri
+sanés ciri bisa ngaji
+tapi jilbab ciri istri
+nu ngabakti ka Yang Widi
+
+Saenyana éta malaikat
+mébérkeun dua jangjangna
+ka jalma nu angkat ngaos
+sarta mani ageung pisan
+
+Ari jalma anu angkat ngaos
+pibekeleun keur jumeneng
+maka éta dilebetkeun
+ka surgana anu langgeng</div>
+ </div>
+
+ <div class="panel">
+  <h3>Pituduh ngaregepkeun</h3>
+  <ol><li>Pilih salah sahiji golongan pupujian.</li><li>Puterkeun audio lamun file MP3-na geus dipasang.</li><li>Bari ngaregepkeun, turutan rumpakana dina layar.</li><li>Catet kecap anu can kaharti, laju tanyakeun hartina.</li><li>Jelaskeun eusi, purwakanti, jeung amanatna ku basa sorangan.</li></ol>
+  <div class="callout"><b>Catetan pikeun guru:</b> unggal rékaman kudu luyu jeung rumpaka anu diputerkeun. Lamun aya variasi rumpaka atawa wirahma ti narasumber, catet asal rékaman jeung saha anu nganadomkeunana. Ménta idin saméméh ngarekam atawa ngagunakeun sora narasumber.</div>
+ </div>
+ <div class="panel">
+  <h3>Dokuméntasi pupujian lokal Pandéglang</h3>
+  <p>Siswa bisa nambahan koléksi ku cara ngawawancara kolot, guru ngaji, ajengan, atawa pangurus masjid. Catet judul pupujian, rumpaka, tempat jeung waktu dinadomkeun, narasumber, sarta idin pikeun ngagunakeun rékamanana.</p>
+  <button class="primary" onclick="complete('audio');openPage('evaluasi')">Bagéan ieu geus kaharti — ka Évaluasi →</button>
+ </div>
+</section>
+
+<section id="evaluasi" class="content">
+ <button class="back" onclick="openPage('home')">← Beranda</button>
+ <div class="lesson-head"><span class="eyebrow">BAGÉAN 06</span><h2>Évaluasi jeung Kaulinan</h2><p>Uji pamahaman ngeunaan pupujian ngaliwatan latihan jeung tantangan.</p></div>
+ <div class="panel"><h3>Pilih kagiatan</h3><div class="navrow"><button id="tabQuiz" class="active" onclick="showEval('quiz')">Latihan soal</button><button id="tabGame" onclick="showEval('game')">Kaulinan: Détéktif Pupujian</button><button id="tabResult" onclick="showEval('result')">Hasil diajar</button></div></div>
+ <div id="quizView" class="panel"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><span class="badge" id="quizNum">Soal 1 ti 10</span><span class="small" id="quizProgress">0/10 dijawab</span></div><div class="progress"><span id="quizBar"></span></div><h3 id="quizQuestion" style="margin-top:16px"></h3><div id="quizOptions"></div><div id="quizFeedback"></div><button class="primary" id="quizNext" onclick="submitQuiz()" style="margin-top:12px">Pariksa jawaban</button></div>
+ <div id="gameView" class="panel" style="display:none"><span class="badge">Kaulinan · Detektif Pupujian</span><h3 id="gameTitle" style="margin-top:14px">Panggihan eusi pupujian!</h3><p class="small" id="gameDesc">Baca sempalan, tuluy tebak jinis jeung amanatna.</p><div class="story-quote" id="gameText"></div><h3 id="gameQuestion" style="margin-top:16px"></h3><div id="gameOptions"></div><div id="gameFeedback"></div><button class="primary" id="nextGame" style="display:none;margin-top:12px" onclick="nextGame()">Tantangan saterusna →</button><p class="small" id="gameScore">Skor: 0 / 100</p><button class="secondary" id="restartGame" onclick="startGame()" style="display:none">Ulang kaulinan</button></div>
+ <div id="resultView" class="panel" style="display:none"><h3>Hasil diajar</h3><p>Bagéan anu geus diréngsékeun:</p><p id="completedList" class="callout">Can aya bagéan anu diréngsékeun.</p><div class="progress"><span id="resultBar"></span></div><p class="small" id="resultPercent">Kamajuan 0%</p><h3>Skor pangluhurna</h3><div style="font-size:42px;font-weight:850;color:var(--wine)" id="resultScore">—</div><button class="secondary" onclick="resetProgress()">Reset kamajuan dina browser ieu</button></div>
+</section>
+<footer class="footer">MPI PUPUJIAN · IRMAL SUNDA · KELAS VII</footer>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+
+// Sambungan Google Apps Script dieusian sanggeus Web App husus MPI Pupujian siap.
+const VISITOR_SCRIPT_URL = '';
+function deviceId(){let id=localStorage.getItem('mpiPupujianDeviceId');if(!id){id=(crypto.randomUUID?crypto.randomUUID():'pupujian-'+Date.now()+'-'+Math.random().toString(36).slice(2));localStorage.setItem('mpiPupujianDeviceId',id)}return id}
+function prepareVisitorForm(){
+ $('visitorName').value=localStorage.getItem('mpiPupujianNama')||'';
+ $('visitorOrigin').value=localStorage.getItem('mpiPupujianAsal')||'';
+ $('visitorForm').addEventListener('submit',async e=>{
+  e.preventDefault();const nama=$('visitorName').value.trim(),asal=$('visitorOrigin').value;
+  if(!nama||!asal){$('visitorError').textContent='Ngaran jeung asal kudu dieusian heula.';return}
+  localStorage.setItem('mpiPupujianNama',nama);localStorage.setItem('mpiPupujianAsal',asal);
+  $('visitorSubmit').disabled=true;$('visitorSubmit').textContent='Ngamuat...';
+  if(VISITOR_SCRIPT_URL){
+   try{await fetch(VISITOR_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({mpi:'PUPUJIAN',deviceId:deviceId(),nama,asal})})}
+   catch(err){$('visitorError').textContent='Teu bisa nyambung ka server. Pariksa internét tuluy cobian deui.';$('visitorSubmit').disabled=false;$('visitorSubmit').textContent='Cobian deui';return}
+  }
+  $('visitorGate').style.display='none';
+ });
+}
+const sections=['pangwanoh','sajarah','wawasan','eusi','wangun','audio'];
+let state={done:[],best:null};
+try{state={...state,...JSON.parse(localStorage.getItem('mpiPupujianProgress')||'{}')}}catch(e){}
+function save(){try{localStorage.setItem('mpiPupujianProgress',JSON.stringify(state))}catch(e){}updateStats()}
+function complete(id){if(!state.done.includes(id))state.done.push(id);save()}
+function openPage(id){document.querySelectorAll('.content').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});if(id==='evaluasi'){showEval('quiz');if(!quizStarted)startQuiz()}updateStats()}
+function updateStats(){let n=sections.filter(id=>state.done.includes(id)).length,p=Math.round(n/sections.length*100);$('doneCount').textContent=n+'/'+sections.length;$('progressPct').textContent=p+'%';$('progressLabel').textContent=p+'%';$('progressBar').style.width=p+'%';$('bestScore').textContent=state.best===null?'—':state.best+'%'}
+function showEval(which){['quiz','game','result'].forEach(x=>{$(x+'View').style.display=x===which?'block':'none';$('tab'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active',x===which)});if(which==='result')renderResults();if(which==='game'&&!gameStarted)startGame()}
+function renderResults(){let names={pangwanoh:'Pangwanoh',sajarah:'Sajarah Pupujian',wawasan:'Wawasan Pupujian',eusi:'Rupa-rupa Eusi',wangun:'Wangun jeung Basa',audio:'Pemutar Audio'};let f=sections.filter(x=>state.done.includes(x));$('completedList').textContent=f.length?f.map(x=>names[x]).join(' · '):'Can aya bagéan anu diréngsékeun.';let p=Math.round(f.length/sections.length*100);$('resultBar').style.width=p+'%';$('resultPercent').textContent='Kamajuan '+p+'%';$('resultScore').textContent=state.best===null?'—':state.best+'%'}
+function resetProgress(){if(confirm('Yakin rék mupus kamajuan diajar dina browser ieu?')){state={done:[],best:null};save();renderResults()}}
+const questions=[
+ {q:'Naon anu dimaksud pupujian?',o:['Carita pondok ngeunaan kahirupan','Puisi buhun ngeunaan kaagamaan','Paguneman sapopoé','Sajak ngeunaan alam'],a:1,e:'Pupujian mangrupa basa ugeran anu eusina patali jeung puja-puji, doa, solawat, naséhat, jeung pangajaran agama.'},
+ {q:'Di mana pupujian biasana ditembangkeun dina tradisi masarakat Sunda?',o:['Di pasar wungkul','Di masjid, musola, jeung pasantrén','Di lapang olahraga','Di kantor désa'],a:1,e:'Pupujian raket patalina jeung kahirupan masarakat Islam, utamana di masjid, musala, jeung pasantrén.'},
+ {q:'Pupujian “Eling-éling Umat” kaasup pupujian anu eusina ...',o:['Ajakan ibadah','Carita perang','Kaéndahan alam','Kagiatan dagang'],a:0,e:'Eling-éling Umat ngingetan umat sangkan ngalaksanakeun solat berjamaah.'},
+ {q:'Pupujian anu eusina ngagungkeun kakawasaan jeung sipat Alloh kaasup ...',o:['Pupujian muji kaagungan Alloh','Pupujian kaulinan','Pupujian lalampahan','Pupujian sasakala'],a:0,e:'Eusi pupujian bisa mangrupa puja-puji kaagungan Alloh.'},
+ {q:'Naon anu disebut padalisan?',o:['Judul pupujian','Baris dina puisi','Sora alat musik','Ngaran pangarang'],a:1,e:'Padalisan nyaéta baris dina puisi, ari sababaraha padalisan ngahiji jadi pada.'},
+ {q:'Padeukeutna sora dina tungtung padalisan disebut ...',o:['Galur','Latar','Purwakanti','Palaku'],a:2,e:'Purwakanti nyaéta padeukeutna atawa sasaruaan sora dina kecap atawa padalisan.'},
+ {q:'Pupujian anu eusina ngajarkeun tata cara wudu kaasup ...',o:['Pangajaran agama','Doa jeung tobat','Solawat ka Kangjeng Nabi','Muji kaagungan Alloh'],a:0,e:'Eusi pupujian bisa ngajarkeun fikih, kaasup perkara wudu jeung ibadah.'},
+ {q:'Salah sahiji fungsi sosial pupujian nyaéta ...',o:['Nepikeun béwara ka masarakat','Nepikeun pangajaran ka masarakat','Ngapalkeun pangajaran di sakola','Méré hiburan ka masarakat'],a:1,e:'Pupujian miboga fungsi sosial pikeun nepikeun ajén, naséhat, jeung pangajaran agama.'},
+ {q:'Naon anu kudu dipigawé saméméh ngagunakeun rékaman sora narasumber dina MPI?',o:['Langsung unggah','Ménta idin ka nu boga sora','Robah ngaranna','Ngahapus katerangan sumber'],a:1,e:'Rékaman sora batur kudu dipaké kalawan idin sarta sumberna disebutkeun.'},
+ {q:'Naon mangpaat ngadokuméntasikeun pupujian lokal Pandéglang?',o:['Pikeun ngajaga tradisi lisan di lingkungan sorangan','Pikeun ngarobah sakabéh rumpaka','Pikeun nyumputkeun asalna','Pikeun mupus variasi lokal'],a:0,e:'Dokuméntasi mantuan mikawanoh variasi lokal jeung ngajaga tradisi lisan sangkan teu leungit.'}
+];
+let quizIndex=0,quizChoice=null,quizLock=false,quizScore=0,quizStarted=false;
+function startQuiz(){quizStarted=true;quizIndex=0;quizScore=0;renderQuiz()}
+function renderQuiz(){let q=questions[quizIndex];$('quizNum').textContent=`Soal ${quizIndex+1} ti ${questions.length}`;$('quizProgress').textContent=`${quizIndex} ti ${questions.length} réngsé`;$('quizBar').style.width=(quizIndex/questions.length*100)+'%';$('quizQuestion').textContent=q.q;$('quizOptions').innerHTML='';$('quizFeedback').innerHTML='';$('quizNext').textContent='Pariksa jawaban';quizChoice=null;quizLock=false;q.o.forEach((v,i)=>{let b=document.createElement('button');b.className='quiz-option';b.textContent=String.fromCharCode(65+i)+'. '+v;b.onclick=()=>{if(quizLock)return;quizChoice=i;document.querySelectorAll('#quizOptions button').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};$('quizOptions').append(b)})}
+function submitQuiz(){if(quizLock){if(quizIndex<questions.length-1){quizIndex++;renderQuiz()}else finishQuiz();return}if(quizChoice===null){$('quizFeedback').innerHTML='<div class="feedback bad">Pilih heula salah sahiji jawaban.</div>';return}quizLock=true;let q=questions[quizIndex],ok=quizChoice===q.a;if(ok)quizScore++;$('quizFeedback').innerHTML=`<div class="feedback ${ok?'good':'bad'}"><b>${ok?'Bener!':'Can bener.'}</b> ${q.e}</div>`;$('quizNext').textContent=quizIndex===questions.length-1?'Tingali hasil':'Soal saterusna →'}
+function finishQuiz(){let score=Math.round(quizScore/questions.length*100);state.best=Math.max(state.best??0,score);complete('evaluasi');$('quizNum').textContent='Evaluasi réngsé';$('quizProgress').textContent=`${quizScore} tina ${questions.length} jawaban leres`;$('quizBar').style.width='100%';$('quizQuestion').textContent=`Skor anjeun: ${score}/100`;$('quizOptions').innerHTML='';$('quizFeedback').innerHTML=`<div class="feedback ${score>=70?'good':'bad'}">${score>=80?'Hebat! Pamahaman anjeun geus hadé.':score>=60?'Hadé, tapi masih perlu latihan deui.':'Hayu baca deui materi, tuluy cobaan deui.'}</div>`;$('quizNext').textContent='Ulang evaluasi';$('quizNext').onclick=startQuiz;save()}
+const gameQuestions=[
+ {t:'Eling-éling umat / Muslimin muslimat / Hayu urang berjamaah salat',q:'Naon tujuan utama rumpaka ieu?',o:['Ngajak umat ngalaksanakeun solat berjamaah','Ngajak umat ngajarkeun solat','Ngajak umat ulah ninggalkeun solat','Ngajak umat solat dina waktuna'],a:0,e:'Rumpaka ieu mangrupa pépéling jeung ajakan pikeun ngalaksanakeun ibadah berjamaah.'},
+ {t:'Eling-éling dulur kabéh / Ibadah ulah campoléh / Beurang peuting ulah weléh',q:'Rumpaka ieu kaasup pupujian dumasar kana eusina ...',o:['Pepeling','Doa jeung tobat','Pangajaran agama','Solawat ka Nabi'],a:0,e:'Eusina ngingetan sangkan henteu ngalalaworakeun ibadah.'},
+ {t:'Alloh Anu Maha Akbar / Nu rahmatna Maha jembar',q:'Saha anu jadi puseur pujian dina rumpaka ieu?',o:['Manusa','Alloh Swt.','Pangarang','Masarakat'],a:1,e:'Rumpaka muji kaagungan jeung rahmat Alloh.'},
+ {t:'Anak Adam di dunya téh keur ngumbara / Hiji wanci urang téh bakal teu aya',q:'Naon amanat anu bisa dicokot?',o:['Hirup di dunya langgeng','Kahirupan éta sementara','Ulah nulungan batur','Kudu ngumpulkeun harta pikeun bekel'],a:1,e:'Rumpaka ngingetan yén hirup di dunya aya tungtungna.'},
+ {t:'Pardu wudu aya genep sadayana / Hiji niat, kadua ngumbah beungeutna',q:'Rumpaka ieu kaasup pupujian anu eusina ...',o:['Pangajaran agama','Solawat ka Nabi','Doa jeung tobat','Pépéling'],a:0,e:'Rumpaka ngajarkeun perkara fikih, nyaéta tata cara wudu.'}
+];
+let gameIndex=0,gamePoints=0,gameLocked=false,gameStarted=false;
+function startGame(){gameStarted=true;gameIndex=0;gamePoints=0;$('gameScore').textContent='Skor: 0 / 100';$('restartGame').style.display='none';renderGame()}
+function renderGame(){let q=gameQuestions[gameIndex];$('gameText').textContent=q.t;$('gameQuestion').textContent=q.q;$('gameOptions').innerHTML='';$('gameFeedback').innerHTML='';$('nextGame').style.display='none';$('gameTitle').textContent=`Detektif Pupujian · Tantangan ${gameIndex+1} ti ${gameQuestions.length}`;$('gameDesc').textContent='Baca rumpaka, talungtik eusina, tuluy pilih jawaban anu pangmerenahna.';gameLocked=false;q.o.forEach((v,i)=>{let b=document.createElement('button');b.className='quiz-option';b.textContent=String.fromCharCode(65+i)+'. '+v;b.onclick=()=>{if(gameLocked)return;gameLocked=true;let ok=i===q.a;if(ok)gamePoints+=20;$('gameFeedback').innerHTML=`<div class="feedback ${ok?'good':'bad'}"><b>${ok?'Bener! +20 poin':'Can bener.'}</b> ${q.e}</div>`;$('gameScore').textContent='Skor: '+gamePoints+' / 100';$('nextGame').style.display='inline-block';$('nextGame').textContent=gameIndex===gameQuestions.length-1?'Tingali hasil':'Tantangan saterusna →';b.classList.add('selected')};$('gameOptions').append(b)})}
+function nextGame(){if(gameIndex<gameQuestions.length-1){gameIndex++;renderGame()}else{$('gameTitle').textContent='Kaulinan réngsé!';$('gameQuestion').textContent='Skor ahir: '+gamePoints+' / 100';$('gameText').textContent='Manéh geus ngaréngsékeun sakabéh tantangan Détéktif Pupujian.';$('gameOptions').innerHTML='';$('gameFeedback').innerHTML=`<div class="feedback ${gamePoints>=60?'good':'bad'}">${gamePoints>=80?'Luar biasa! Manéh geus maham eusi pupujian.':'Hadé, terus latihan deui sangkan leuwih paham.'}</div>`;$('nextGame').style.display='none';$('restartGame').style.display='inline-block';state.best=Math.max(state.best??0,gamePoints);complete('evaluasi');save()}}
+updateStats();prepareVisitorForm();
+</script>
+</body>
+</html>
