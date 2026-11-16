@@ -458,7 +458,7 @@ ka surgana anu langgeng</div>
 const $=id=>document.getElementById(id);
 
 // Sambungan Google Apps Script dieusian sanggeus Web App husus MPI Pupujian siap.
-const VISITOR_SCRIPT_URL = '';
+const VISITOR_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKZ7xOqBHaptQ3rMJs_ta3V8D6YIo5c5Ekc8P__Fj_eMOlhLottJUEFa6V76OR4N28/exec';
 function deviceId(){let id=localStorage.getItem('mpiPupujianDeviceId');if(!id){id=(crypto.randomUUID?crypto.randomUUID():'pupujian-'+Date.now()+'-'+Math.random().toString(36).slice(2));localStorage.setItem('mpiPupujianDeviceId',id)}return id}
 function prepareVisitorForm(){
  $('visitorName').value=localStorage.getItem('mpiPupujianNama')||'';
